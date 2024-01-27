@@ -4,15 +4,20 @@ import (
 	"fmt"
 )
 
-func PrettyBoot() {
+func PrettyBoot(portString string) {
 	fmt.Print(`
-N   N EEEEE TTTTT GGG   OOO 
-NN  N E       T  G     O   O
-N N N EEEE    T  G  GG O   O
-N  NN E       T  G   G O   O
-N   N EEEEE   T   GGG   OOO
+    _   __     __  ______    
+   / | / /__  / /_/ ____/___ 
+  /  |/ / _ \/ __/ / __/ __ \
+ / /|  /  __/ /_/ /_/ / /_/ /
+/_/ |_/\___/\__/\____/\____/ 
 
 `)
-	fmt.Println("🚀 Server preparing to launch...")
-	fmt.Println("📡 Server is listening on port 3000")
+	fmt.Println("🚀 Launching NetGo...")
+	fmt.Println()
+	fmt.Printf("📡 Server is listening on port %s\n\n", portString)
+}
+
+func LogRequest(method string, path string) {
+	fmt.Printf("📨 [%s] %s\n\n", method, path)
 }

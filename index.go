@@ -1,11 +1,9 @@
 package main
 
-import (
-	"NetGo/src/server"
-)
+import "NetGo/src/lib"
 
 
 func main() {
-	// Start the server
-	server.Start(3000)
+	// Start the server on port 3000
+	lib.NetGoServer(3000)
 }
