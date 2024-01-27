@@ -14,7 +14,7 @@ type Post struct {
 
 type Posts []Post
 
-func PostsController(method string, path string) types.NetGoResponse  {
+func PostsController(method string, path string, session utils.Session) types.NetGoResponse  {
 	param := utils.ExtractPathParam(path, "posts")
 	var postId int
 	if param != "" {

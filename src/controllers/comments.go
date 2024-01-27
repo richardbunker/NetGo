@@ -13,7 +13,7 @@ type Comment struct {
 
 type Comments []Comment
 
-func CommentsController(method string, path string) types.NetGoResponse  {
+func CommentsController(method string, path string, session utils.Session) types.NetGoResponse  {
 	param := utils.ExtractPathParam(path, "comments")
 	var commentId int
 	if param != "" {

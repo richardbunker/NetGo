@@ -1,6 +1,7 @@
 package console
 
 import (
+	"NetGo/src/utils"
 	"fmt"
 )
 
@@ -18,6 +19,6 @@ func PrettyBoot(portString string) {
 	fmt.Printf("📡 Server is listening on port %s\n\n", portString)
 }
 
-func LogRequest(method string, path string) {
-	fmt.Printf("📨 [%s] %s\n\n", method, path)
+func LogRequest(method string, path string, session *utils.Session) {
+	fmt.Printf("📨 [%s] %s | Who: %v ClientId: %v\n\n", method, path, session.GetName, session.GetClientId)
 }

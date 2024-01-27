@@ -4,4 +4,4 @@
 
 ### Todo
 
--   JSON encoding returns
+-   How to Auth certain endpoints but no other?

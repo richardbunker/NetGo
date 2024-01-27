@@ -1,6 +1,8 @@
 package types
 
-type RouteList map[string]func(method string, path string) NetGoResponse
+import "NetGo/src/utils"
+
+type RouteList map[string]func(method string, path string, session utils.Session) NetGoResponse
 // type RouteList map[string]func(w http.ResponseWriter, r *http.Request)
 
 type NotFoundResponse struct {

@@ -3,6 +3,7 @@ package controllers
 import (
 	"NetGo/src/types"
 	"NetGo/src/utils"
+	"fmt"
 	"net/http"
 )
 
@@ -13,7 +14,8 @@ type PostWithComments struct {
 	Comments []Comment `json:"comments"`
 }
 
-func PostWithCommentsController(method string, path string) types.NetGoResponse  {
+func PostWithCommentsController(method string, path string, session utils.Session) types.NetGoResponse  {
+	fmt.Println("Session:", session)
 	param := utils.ExtractPathParam(path, "posts")
 	if param == "" {
 		return types.NetGoResponse{Err: true, StatusCode: http.StatusBadRequest, Body: types.NetGoGenericResponse{Message: "Post id required"}}
