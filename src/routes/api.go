@@ -1,34 +1,53 @@
 package routes
 
 import (
-	"NetGo/src/lib"
+	"NetGo/src/controllers"
 	"fmt"
 	"net/http"
 	"regexp"
 )
 
-var GET, POST = lib.GET, lib.POST
 
 func Router(w http.ResponseWriter, r *http.Request) {
-	// http.HandleFunc("/posts", postsController.Handler)
-	path := r.URL.Path
-	pattern :=  regexp.MustCompile(`:\w+`).ReplaceAllString("/posts/:id/comments", "([^/]+)")
+	// A map of routes and their controllers
+	var routeList = map[string]func(writer http.ResponseWriter, request *http.Request){
+		"/posts": controllers.PostsController,
+		"/posts/:id": controllers.PostsController,
+		"/posts/:id/comments": controllers.PostCommentsController,
+	}
+
+	// Router forwards requests to each controller
+	var handler = selectControllerToHandleRequest(r.URL.Path, routeList) 
+	if handler != nil {
+		handler(w, r)
+	} else {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("Not Found"))
+	}
+}
+
+// A function to loop through an array of routes and call the appropriate controller
+func match(path string, route string) bool {
+	pattern :=  regexp.MustCompile(`:\w+`).ReplaceAllString(route, "([^/]+)")
 	regex, err := regexp.Compile("^" + pattern + "$")
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"error": "Internal Server Error"}`))
+		fmt.Println("Error in regex")	
+		return false;
 	}
-	if regex.MatchString(path) {
-		fmt.Println("Matched")
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Matched"))
-	} 
+	return regex.MatchString(path)
+}
+
+
+func selectControllerToHandleRequest(path string, routeList map[string]func(w http.ResponseWriter, r *http.Request)) func(writer http.ResponseWriter, request *http.Request) {
+	// A map of routes and their controllers
 	
-	// http.HandleFunc("/posts/:id/comments", func(w http.ResponseWriter, r *http.Request) {
-	// 	w.Write([]byte("Comments"))
-	// })
-	// POST("/posts", posts.Create)
-	// Put("/posts/:id", posts.Update)
-	// Delete("/posts/:id", posts.Delete)
+	// Loop through the routes and call the appropriate controller
+	var matchedController func(writer http.ResponseWriter, request *http.Request)
+	for route, controller := range routeList {
+		if match(path, route) {
+			matchedController = controller
+			break
+		}
+	}
+	return matchedController
 }
