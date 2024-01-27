@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"strconv"
 	"strings"
 )
 
@@ -12,6 +13,14 @@ func ExtractPathParam(urlPath string, resource string) string {
 		return pathParts[index]
 	}
 	return ""
+}
+
+func ConvertPathParamToInt(param string) int {
+	paramInt, err := strconv.Atoi(param)
+	if err != nil {
+		return 0
+	}
+	return paramInt
 }
 
 

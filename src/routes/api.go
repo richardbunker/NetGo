@@ -11,7 +11,7 @@ import (
 var ApiRoutes = types.RouteList{
 	"/posts": controllers.PostsController,
 	"/posts/:id": controllers.PostsController,
-	"/posts/:id/comments": controllers.PostCommentsController,
+	"/posts/:id/comments": controllers.PostWithCommentsController,
 	"/comments": controllers.CommentsController,
 	"/comments/:id": controllers.CommentsController,
 }
