@@ -1,9 +1,9 @@
 package types
 
-import "NetGo/src/utils"
+import "net/http"
 
-type RouteList map[string]func(method string, path string, session utils.Session) NetGoResponse
-// type RouteList map[string]func(w http.ResponseWriter, r *http.Request)
+type Methods map[string]Routes
+type Routes map[string]func(w http.ResponseWriter, r *http.Request)
 
 type NotFoundResponse struct {
 	Message string `json:"message"`
