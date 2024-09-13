@@ -1,11 +1,11 @@
 package main
 
 import (
+	. "NetGo/app"
+	. "NetGo/lib"
+	. "NetGo/types"
 	"fmt"
 	"net/http"
-	. "rest_api/app"
-	. "rest_api/lib"
-	. "rest_api/types"
 	"strconv"
 )
 

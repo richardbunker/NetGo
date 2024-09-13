@@ -1,12 +1,12 @@
 package app
 
 import (
+	. "NetGo/lib"
+	. "NetGo/types"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"regexp"
-	. "rest_api/lib"
-	. "rest_api/types"
 	"strings"
 )
 

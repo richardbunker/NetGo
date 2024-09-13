@@ -1,9 +1,9 @@
 package lib
 
 import (
+	. "NetGo/types"
 	"encoding/json"
 	"fmt"
-	. "rest_api/types"
 )
 
 func StartUpMessage(portString string) {

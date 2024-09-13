@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	. "rest_api/types"
+	. "NetGo/types"
 	"testing"
 )
 

@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	. "rest_api/types"
+	. "NetGo/types"
 )
 
 // A simple handler to show a user

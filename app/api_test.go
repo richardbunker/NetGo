@@ -1,8 +1,8 @@
 package app
 
 import (
+	. "NetGo/types"
 	"fmt"
-	. "rest_api/types"
 	"testing"
 )
 

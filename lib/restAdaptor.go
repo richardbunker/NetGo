@@ -1,9 +1,9 @@
 package lib
 
 import (
+	. "NetGo/types"
 	"encoding/json"
 	"net/http"
-	. "rest_api/types"
 )
 
 func RestApiAdaptor(r *http.Request) RestApiRequest {

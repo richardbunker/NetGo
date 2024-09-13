@@ -1,9 +1,9 @@
 package middleware
 
 import (
+	. "NetGo/types"
 	"fmt"
 	"os"
-	. "rest_api/types"
 )
 
 func getAuthToken() string {
