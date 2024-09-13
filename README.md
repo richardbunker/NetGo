@@ -11,9 +11,9 @@
 
 NetGo is a simple REST API framework for Go. It provides a simple way to create REST APIs and register routes.
 
-## Instructions
+## Route Registration
 
-To create a new RestAPI along with registering your routes, you can use the following code:
+Register your routes in the `main.go` file. You can use the `Get`, `Post`, `Put`, and `Delete` methods to register routes.
 
 ```go
 api := RestApi()
@@ -58,44 +58,6 @@ To run the application locally, you can use the following command:
 
 ```bash
 $ go run ./main.go
-```
-
-This will create an RestAPI, register the routes and print the response to the console.
-
-#### Example
-
-```go
-func main() {
-	// Sample request
-	request := RestApiRequest{
-		Method: "POST",
-		Path:   "/users/1234",
-		Query: map[string]string{
-			"from": "2021-01-01",
-		},
-		Body: map[string]interface{}{
-			"name":  "John Doe",
-			"email": "example@test.com",
-		},
-	}
-
-	// Create a new API application
-	api := RestApi()
-
-	// Register the routes
-	api.Get("/users/:userId", ShowUser)
-	api.Put("/users/:userId", UpdateUser)
-
-	// Handle the requests
-	getResponse := api.HandleRequest(getRequest)
-	postResponse := api.HandleRequest(postRequest)
-
-	// Print the response bodies
-	getBody, _ := json.Marshal(getResponse.Body)
-	postBody, _ := json.Marshal(postResponse.Body)
-	fmt.Println("GET Request Body: ", string(getBody))
-	fmt.Println("PUT Response Body: ", string(postBody))
-}
 ```
 
 ## Testing
