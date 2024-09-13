@@ -1,6 +1,15 @@
-# AWS Lambda Go RestAPI
+```
+    _   __     __  ______
+   / | / /__  / /_/ ____/___
+  /  |/ / _ \/ __/ / __/ __ \
+ / /|  /  __/ /_/ /_/ / /_/ /
+/_/ |_/\___/\__/\____/\____/
 
-A quick way to create a RestAPI using AWS Lambda and API Gateway (HTTP) written in Go.
+```
+
+# NetGo
+
+NetGo is a simple REST API framework for Go. It provides a simple way to create REST APIs and register routes.
 
 ## Instructions
 
@@ -48,7 +57,7 @@ func UpdateUser(request RestApiRequest) RestApiResponse {
 To run the application locally, you can use the following command:
 
 ```bash
-$ go run ./dev/main.go
+$ go run ./main.go
 ```
 
 This will create an RestAPI, register the routes and print the response to the console.
@@ -89,12 +98,10 @@ func main() {
 }
 ```
 
-## Deployment
+## Testing
 
-To build and zip the application, you can use the following command:
+To run the tests, you can use the following command:
 
 ```bash
-$ ./build.sh
+$ ./test.sh
 ```
-
-This will create a `deployment.zip` file that you can upload to AWS Lambda.
