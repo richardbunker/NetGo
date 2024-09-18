@@ -11,7 +11,7 @@ type RestApiRequest struct {
 }
 
 type RestApiResponse struct {
-	Body       map[string]interface{}
+	Body       interface{}
 	StatusCode int
 }
 
@@ -39,3 +39,9 @@ const (
 	PUT    Method = "PUT"
 	DELETE Method = "DELETE"
 )
+
+type User struct {
+	Id    int64  `json:"id"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
+}

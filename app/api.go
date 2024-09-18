@@ -158,9 +158,7 @@ func match(path string, route string) bool {
 // A helper function to create an error response
 func ApiErrorResponse(statusCode int, message string) RestApiResponse {
 	return RestApiResponse{
-		Body: map[string]interface{}{
-			"error": message,
-		},
+		Body:       map[string]string{"error": message},
 		StatusCode: statusCode,
 	}
 }

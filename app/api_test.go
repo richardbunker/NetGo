@@ -49,9 +49,8 @@ func TestApiGetRoute(t *testing.T) {
 		t.Errorf("Expected status code 200, got %d", response.StatusCode)
 	}
 
-	// Assert response body
-	if response.Body["postId"] != "123" {
-		t.Errorf("Expected postId to be '123', got %v", response.Body["postId"])
+	if response.Body.(map[string]interface{})["postId"] != "123" {
+		t.Errorf("Expected postId to be 123, got %s", response.Body.(map[string]interface{})["postId"])
 	}
 }
 

@@ -1,4 +1,6 @@
+.env
 NetGo
 coverage.html
 coverage.out
 tasks.md
+Database.db
