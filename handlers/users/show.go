@@ -1,33 +1,27 @@
 package users
 
 import (
-	. "NetGo/app"
-	. "NetGo/db"
-	. "NetGo/types"
+	db "NetGo/db/models"
+	NetGoHttp "NetGo/services/http"
+	NetGoTypes "NetGo/types"
 )
 
 // Show a user
-func ShowUser(request RestApiRequest) RestApiResponse {
-	// Query the database
-	params := []interface{}{request.PathParams["userId"]}
-	data := Query(`
-		SELECT *
-		FROM users
-		WHERE id = ?
-	`, params...)
+func ShowUser(request NetGoTypes.RestApiRequest) NetGoTypes.RestApiResponse {
+	userId := request.PathParams["userId"]
 
-	if len(data) == 0 {
-		return ApiErrorResponse(404, "User not found")
+	// Find the user in the database by id
+	item, ok := db.FindUserById(userId)
+	if !ok {
+		return NetGoHttp.ApiResponse(404, "User not found")
 	}
-
-	// Create a new user
-	user := User{
-		Id:    data[0]["id"].(int64),
-		Name:  data[0]["name"].(string),
-		Email: data[0]["email"].(string),
+	user := NetGoTypes.User{
+		Id:    item.Id,
+		Name:  item.Name,
+		Email: item.Email,
 	}
 	// Return the user
-	return RestApiResponse{
+	return NetGoTypes.RestApiResponse{
 		StatusCode: 200,
 		Body:       user,
 	}

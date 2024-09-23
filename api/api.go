@@ -2,6 +2,7 @@ package app
 
 import (
 	. "NetGo/lib"
+	NetGoHttp "NetGo/services/http"
 	. "NetGo/types"
 	"encoding/json"
 	"fmt"
@@ -90,6 +91,10 @@ func validateRegisteredRoute(pathToMatch string) error {
 
 // Register a handler for a request
 func (api *Api) RegisterRoute(method Method, pathToMatch string, routeOptions RouteOptions) {
+	// If the path ends with a slash, remove it
+	if strings.HasSuffix(pathToMatch, "/") {
+		pathToMatch = pathToMatch[:len(pathToMatch)-1]
+	}
 	err := validateRegisteredRoute(pathToMatch)
 	if err != nil {
 		return
@@ -105,7 +110,7 @@ func (api *Api) RegisterRoute(method Method, pathToMatch string, routeOptions Ro
 func (api *Api) HandleRequest(request RestApiRequest) RestApiResponse {
 	err := validateMethodHasRoutes(Method(request.Method), api.methods)
 	if err != nil {
-		return ApiErrorResponse(405, "Method not allowed")
+		return NetGoHttp.ApiResponse(405, "Method not allowed")
 	}
 	var routeOptions RouteOptions
 	for route := range api.methods[Method(request.Method)] {
@@ -116,15 +121,14 @@ func (api *Api) HandleRequest(request RestApiRequest) RestApiResponse {
 		}
 	}
 	if routeOptions.Handler == nil {
-		return ApiErrorResponse(404, "Route not found")
+		return NetGoHttp.ApiResponse(404, "Route not found")
 	}
 	for _, middleware := range routeOptions.Middleware {
 		error, reason := middleware(request)
 		if error != nil {
-			return ApiErrorResponse(reason.StatusCode, reason.Message)
+			return NetGoHttp.ApiResponse(reason.StatusCode, reason.Message)
 		}
 	}
-	LogRequest(request)
 	return routeOptions.Handler(request)
 }
 
@@ -155,15 +159,7 @@ func match(path string, route string) bool {
 	return regex.MatchString(path)
 }
 
-// A helper function to create an error response
-func ApiErrorResponse(statusCode int, message string) RestApiResponse {
-	return RestApiResponse{
-		Body:       map[string]string{"error": message},
-		StatusCode: statusCode,
-	}
-}
-
-func (api *Api) Middleware(middleware []Middleware) {
+func (api *Api) UseMiddleware(middleware []Middleware) {
 	for _, m := range middleware {
 		api.globalMiddleware = append(api.globalMiddleware, m)
 	}

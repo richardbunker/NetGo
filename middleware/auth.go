@@ -1,21 +1,32 @@
 package middleware
 
 import (
+	"NetGo/services/auth"
 	. "NetGo/types"
 	"fmt"
 	"os"
 )
 
-func getAuthToken() string {
-	return "Bearer " + os.Getenv("AUTH_TOKEN")
+func Authenticated(request RestApiRequest) (error, *MiddlewareReason) {
+	requestToken := request.Headers["Authorization"]
+	// If no authorization header is present, then return unauthorized
+	if len(requestToken) == 0 {
+		return unauthenticatedResponse()
+	}
+
+	// Verify the JWT token
+	_, err := auth.VerifyJWT(requestToken[0], []byte(os.Getenv("JWT_SECRET")))
+	if err != nil {
+		return unauthenticatedResponse()
+	}
+
+	return nil, nil
 }
 
-func Authorize(request RestApiRequest) (error, *MiddlewareReason) {
-	if request.Headers["authorization"][0] == getAuthToken() {
-		return nil, nil
-	}
-	return fmt.Errorf("Unauthorized"), &MiddlewareReason{
+// Unauthenticated middleware response
+func unauthenticatedResponse() (error, *MiddlewareReason) {
+	return fmt.Errorf("Unauthenticated"), &MiddlewareReason{
 		StatusCode: 401,
-		Message:    "Unauthorized",
+		Message:    "Unauthenticated",
 	}
 }
