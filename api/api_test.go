@@ -1,6 +1,7 @@
 package app
 
 import (
+	NetGoHttp "NetGo/services/http"
 	. "NetGo/types"
 	"fmt"
 	"testing"
@@ -318,7 +319,7 @@ func TestRegistersMiddleware(t *testing.T) {
 	// Create a new API instance
 	api := RestApi()
 
-	api.Middleware([]Middleware{
+	api.UseMiddleware([]Middleware{
 		func(request RestApiRequest) (error, *MiddlewareReason) {
 			return nil, nil
 		},
@@ -330,7 +331,7 @@ func TestRegistersMiddleware(t *testing.T) {
 }
 
 func TestErrorResponse(t *testing.T) {
-	response := ApiErrorResponse(401, "Unauthorized")
+	response := NetGoHttp.ApiResponse(401, "Unauthorized")
 
 	// Assert status code
 	if response.StatusCode != 401 {

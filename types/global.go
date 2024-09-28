@@ -40,8 +40,42 @@ const (
 	DELETE Method = "DELETE"
 )
 
+// User is a simplified struct to work with users from the database.
 type User struct {
-	Id    int64  `json:"id"`
-	Name  string `json:"name"`
+	Id    string
+	Email string
+	Name  string
+}
+
+// UserJson is the struct to help prepare the JSON response for users.
+type UserJson struct {
+	Id    string `json:"id"`
 	Email string `json:"email"`
+	Name  string `json:"name"`
+}
+
+// UserDynamoDBItem is the struct to help prepare the DynamoDB put item action for users.
+type UserDynamoDBItem struct {
+	PK    string
+	SK    string
+	GSIPK string
+	GSISK string
+	Type  string
+	Name  string
+}
+
+// A simplified stuct to work with login tokens from the database.
+type LoginToken struct {
+	Id        string
+	UserId    string
+	ExpiresAt string
+}
+
+// LoginTokenDynamoDB is the struct to help prepare the DynamoDB put item action for login tokens.
+type LoginTokenDynamoDBItem struct {
+	PK        string
+	SK        string
+	GSIPK     string
+	Type      string
+	ExpiresAt string
 }

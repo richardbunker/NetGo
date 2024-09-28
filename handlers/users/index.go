@@ -1,32 +1,26 @@
 package users
 
 import (
-	. "NetGo/db"
+	db "NetGo/db/models"
 	. "NetGo/types"
 )
 
 // Show a user
 func IndexUsers(request RestApiRequest) RestApiResponse {
-	// Query the database
-	data := Query(`
-		SELECT *
-		FROM users
-	`)
+	// Get all users
+	items, _ := db.ListUsers()
 
-	results := []User{}
-
-	for _, row := range data {
-		user := User{
-			Id:    row["id"].(int64),
-			Name:  row["name"].(string),
-			Email: row["email"].(string),
-		}
-		results = append(results, user)
+	users := []User{}
+	for _, item := range items {
+		users = append(users, User{
+			Id:    item.Id,
+			Name:  item.Name,
+			Email: item.Email,
+		})
 	}
-
 	// Return the user
 	return RestApiResponse{
 		StatusCode: 200,
-		Body:       results,
+		Body:       users,
 	}
 }
