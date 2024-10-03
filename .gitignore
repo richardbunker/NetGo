@@ -1,7 +1,7 @@
 .env
 ddb_ap.md
-NetGo
 coverage.html
 coverage.out
 tasks.md
-Database.db
+bootstrap
+deployment.zip
