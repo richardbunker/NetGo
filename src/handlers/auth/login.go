@@ -17,7 +17,13 @@ type SuccessfulLoginResponse struct {
 // Login a user
 func Login(request NetGoTypes.RestApiRequest) NetGoTypes.RestApiResponse {
 	// Extract the token from the request query
-	token := request.Body["token"].(string)
+	token, ok := request.Body["token"].(string)
+	if !ok {
+		return NetGoTypes.RestApiResponse{
+			StatusCode: 400,
+			Body:       "Invalid token",
+		}
+	}
 
 	// Find the login token in the database
 	loginToken, err := models.FindLoginToken(token)

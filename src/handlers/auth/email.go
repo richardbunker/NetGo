@@ -13,7 +13,14 @@ type EmailMagicLinkMessage struct {
 
 // Email Magic Link
 func EmailMagicLink(request RestApiRequest) RestApiResponse {
-	userEmail := request.Body["email"].(string)
+	userEmail, ok := request.Body["email"].(string)
+	if !ok {
+		return RestApiResponse{
+			StatusCode: 400,
+			Body:       "Invalid email",
+		}
+	}
+
 	user, exists := models.FindUserByEmail(userEmail)
 	if exists {
 		token, err := auth.GenerateLoginToken(user.Id, 48, 1)
