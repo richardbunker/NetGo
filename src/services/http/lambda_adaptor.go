@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/aws/aws-lambda-go/events"
+	"net/http"
 )
 
 func LambdaAPIGatewayHTTPRequestAdaptor(request events.APIGatewayV2HTTPRequest) NetGoTypes.RestApiRequest {
@@ -12,9 +13,13 @@ func LambdaAPIGatewayHTTPRequestAdaptor(request events.APIGatewayV2HTTPRequest) 
 	headers := request.Headers
 	adaptedHeaders := make(map[string][]string)
 	for key, value := range headers {
+		key = http.CanonicalHeaderKey(key)
 		adaptedHeaders[key] = []string{value}
 	}
 	// Unmarshal the request body
+	if request.Body == "" {
+		request.Body = "{}"
+	}
 	var requestBody map[string]interface{}
 	err := json.Unmarshal([]byte(request.Body), &requestBody)
 	if err != nil {
