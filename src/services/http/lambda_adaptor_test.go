@@ -31,7 +31,7 @@ func TestRestApiLambaAdaptor(t *testing.T) {
 	if adaptedRequest.Body["name"] != "Mickey Mouse" {
 		t.Errorf("Expected body to be 'Mickey Mouse', got %v", adaptedRequest.Body["name"])
 	}
-	if adaptedRequest.Headers["authorization"][0] != "Bearer token" {
+	if adaptedRequest.Headers["Authorization"][0] != "Bearer token" {
 		t.Errorf("Expected authorization header to be 'Bearer token', got %v", adaptedRequest.Headers["authorization"])
 	}
 	if len(adaptedRequest.Cookies) != 0 {

@@ -11,8 +11,14 @@ type RegisterResponse struct {
 }
 
 func Register(request NetGoTypes.RestApiRequest) NetGoTypes.RestApiResponse {
-	userEmail := request.Body["email"].(string)
-	name := request.Body["name"].(string)
+	userEmail, emailOk := request.Body["email"].(string)
+	name, nameOk := request.Body["name"].(string)
+	if !emailOk || !nameOk {
+		return NetGoTypes.RestApiResponse{
+			StatusCode: 400,
+			Body:       "Invalid email or name",
+		}
+	}
 
 	// Check if the user already exists
 	_, exists := db.FindUserByEmail(userEmail)
