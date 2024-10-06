@@ -13,15 +13,15 @@ NetGo is an AWS 'Lambda-first' RESTful API application written in pure Go. It pr
 
 ## ✨ Features
 
-- Route registration
-- Request and response handling
-- Middleware support
-- JWT authentication
-- DynamoDB integration
-- User registration
-- Full Terraform deployment support
-- Local development support
-- Unit tests [WIP]
+-   Route registration
+-   Request and response handling
+-   Middleware support
+-   JWT authentication
+-   DynamoDB integration
+-   User registration
+-   Full Terraform deployment support
+-   Local development support
+-   Unit tests [WIP]
 
 ## 🚀 Quick Start
 
@@ -184,6 +184,14 @@ POST /auth/login
 }
 ```
 
+Expected response:
+
+```bash
+{
+    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+}
+```
+
 ## 🔐 JWT Authentication
 
 NetGo provides JWT authentication support out of the box. You can use the `Authenticate` middleware to protect your routes.
@@ -194,6 +202,11 @@ api.UseMiddleware(Authenticate)
 ```
 
 The `Authenticate` middleware will check the `Authorization` header for a valid JWT token. If the token is valid, the request will be passed to the route's handler function. If the token is invalid, the middleware will return a `401 Unauthorized` response.
+
+```bash
+// Example request with JWT token
+curl -X GET http://localhost:8080/users/1 -H "Authorization eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+```
 
 ## 💻 Local development
 
