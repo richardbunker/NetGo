@@ -11,7 +11,7 @@
 
 NetGo is an AWS 'Lambda-first' RESTful API application written in pure Go. It provides a simple way to create RESTful APIs with minimal dependencies. It is designed to be lightweight and easy to use. It is built for the AWS cloud and tightly integrates with AWS services such as DynamoDB, API Gateway, Certificate Manager, and Lambda.
 
-## Features
+## ✨ Features
 
 - Route registration
 - Request and response handling
@@ -23,7 +23,23 @@ NetGo is an AWS 'Lambda-first' RESTful API application written in pure Go. It pr
 - Local development support
 - Unit tests [WIP]
 
-## Deployment
+## 🚀 Quick Start
+
+To get started with NetGo, clone the repository:
+
+```bash
+$ git clone git@github.com:richardbunker/NetGo.git
+```
+
+Then, `cd` into NetGo and run the following command:
+
+```bash
+$ go run ./development/app.go
+```
+
+This will start a local server on port 8080. You can then access the server at `http://localhost:8080`.
+
+## 📦 Deployment
 
 NetGo is designed to be deployed to AWS via Terraform. To deploy the application, you can use the following command:
 
@@ -35,20 +51,50 @@ $ terraform init
 $ ./deploy.sh my-aws-profile plan
 ```
 
-Running `./deploy.sh` will build the Go application, create a ZIP archive, and deploy the application to AWS using Terraform. The `AWS_PROFILE` is the AWS CLI profile to use, and the `TERRAFORM_ACTION` is the Terraform action to perform, such as `plan` or `apply`.
+Running `./deploy.sh` will build the Go application, create a `deployment.zip`, and deploy the application to AWS using Terraform. The `AWS_PROFILE` is the AWS CLI profile to use, and the `TERRAFORM_ACTION` is the Terraform action to perform, such as `plan` or `apply`.
 
-#### Note: The `deploy.sh` script assumes that you have the AWS CLI and Terraform installed and setup on your machine.
+##### Note 💡: The `deploy.sh` script assumes that you have the AWS CLI and Terraform installed and setup on your machine.
 
-## Route Registration
+### Terraform Variables
 
-After instantiation, you may use the `Get`, `Post`, `Put`, and `Delete` methods to register routes.
+You will need to set the following Terraform variables in a new `vars.tfvars` file:
+
+```bash
+$ vim vars.tfvars
+```
+
+An example `vars.tfvars.example` file is provided in the `terraform` directory:
+
+```hcl
+service_name         = "your-app-name-here"
+cost_center          = "your-app-name-here-cc"
+lambda_function_name = "your-app-name-here-lambda"
+api_name             = "your-app-name-here-api"
+dynamodb_table_name  = "your-app-name-here-table"
+dynamodb_global_secondary_index_name = "your-app-name-here-gsi"
+lambda_dynamodb_policy_name = "your-app-name-here-dynamodb-policy"
+api_domain_name = "your-app-name-here.your-domain.com"
+domain_name = "your-domain.com"
+email_from="your@email.com"
+email_password="your-password"
+email_smtp_host="your.host"
+email_smtp_port=587
+```
+
+### AWS Route53 Hosted Zone
+
+NetGo requires an existing AWS Route53 Hosted Zone along with a registered domain. This will need to be done manually before running the Terraform deployment.
+
+To do this see the following AWS documentation: [Creating a Public Hosted Zone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingHostedZone.html)
+
+## 🛣️ Route Registration
+
+The `./app/bootstrap.go` is where you may register your routes. The `RestApi` function returns a new instance of the `RestApi` struct. After instantiation, you may use the `Get`, `Post`, `Put`, and `Delete` methods to register routes.
 
 ```go
 api := RestApi()
-
 // Register the routes
-api.Get("/users/:userId", ShowUser)
-api.Put("/users/:userId", UpdateUser)
+api.Get("/posts/:postId", ShowPost)
 ```
 
 ### Grouping Routes
@@ -57,16 +103,17 @@ You can group routes by using the `Group` method. This is useful for applying mi
 
 ```go
 api := RestApi()
-api.Group("/users", []Middleware{}, func() {
-	api.Get("/", ListUsers)
-	api.Get("/:userId", ShowUser)
-	api.Put("/:userId", UpdateUser)
+// Register the Post CRUD routes
+api.Group("/posts", []Middleware{}, func() {
+    api.Get("/", ListPosts)
+    api.Get("/:postId", ShowPost)
+    api.Post("/", CreatePost)
+    api.Put("/:postId", UpdatePost)
+    api.Delete("/:postId", DeletePost)
 })
 ```
 
-The `ShowUser` and `UpdateUser` functions are the handlers for the routes. You can define them as follows:
-
-## Route Handlers
+## 🔧 Route Handlers
 
 Route handlers are functions that take a `RestApiRequest` as an argument and return a `RestApiResponse`. The `RestApiRequest` contains the request data, such as the path parameters, query parameters, and request body. The `RestApiResponse` contains the response data, such as the response body and status code.
 
@@ -74,17 +121,15 @@ Route handlers are functions that take a `RestApiRequest` as an argument and ret
 // A simple handler to show a user
 func ShowUser(request RestApiRequest) RestApiResponse {
 	userId := request.PathParams["userId"]
+	user := ... // Fetch the user from the database
 	return RestApiResponse{
-		Body: map[string]interface{}{
-			"id":   userId,
-			"name": "Mickey Mouse",
-		},
+		Body: user,
 		StatusCode: 200,
 	}
 }
 ```
 
-## Middleware
+## 🧩 Middleware
 
 NetGo provides middleware support to allow you to proccess the incoming request before it reaches the route's handler function. You can use the `UseMiddleware` method to apply global middleware to you routes.
 
@@ -104,9 +149,9 @@ api.Group("/users", []Middleware{Authenticate, RateLimit, Logger}, func() {
 })
 ```
 
-The middleware functions are processed in the order they are applied.
+##### Note 💡: The middleware functions are processed in the order they are applied.
 
-## JWT Authentication
+## 🔐 JWT Authentication
 
 NetGo provides JWT authentication support. You can use the `Authenticate` middleware to protect your routes.
 
@@ -115,7 +160,7 @@ api := RestApi()
 api.UseMiddleware(Authenticate)
 ```
 
-## Local development
+## 💻 Local development
 
 To run the application locally, you can use the following command:
 
@@ -123,7 +168,7 @@ To run the application locally, you can use the following command:
 $ go run ./development/app.go
 ```
 
-## Testing
+## 🧪 Testing
 
 To run the tests, you can use the following command:
 
