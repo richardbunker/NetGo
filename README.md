@@ -9,7 +9,9 @@
 
 # NetGo
 
-NetGo is a small and lightweight RESTful API application written in pure Go. It provides a simple way to create RESTful APIs. Features include:
+NetGo is an AWS 'Lambda-first' RESTful API application written in pure Go. It provides a simple way to create RESTful APIs with minimal dependencies. It is designed to be lightweight and easy to use. It is built for the AWS cloud and tightly integrates with AWS services such as DynamoDB, API Gateway, Certificate Manager, and Lambda.
+
+## Features
 
 - Route registration
 - Request and response handling
@@ -17,6 +19,25 @@ NetGo is a small and lightweight RESTful API application written in pure Go. It 
 - JWT authentication
 - DynamoDB integration
 - User registration
+- Full Terraform deployment support
+- Local development support
+- Unit tests [WIP]
+
+## Deployment
+
+NetGo is designed to be deployed to AWS via Terraform. To deploy the application, you can use the following command:
+
+```bash
+$ cd ./terraform
+$ terraform init
+
+# ./deploy.sh <AWS_PROFILE> <TERRAFORM_ACTION>
+$ ./deploy.sh my-aws-profile plan
+```
+
+Running `./deploy.sh` will build the Go application, create a ZIP archive, and deploy the application to AWS using Terraform. The `AWS_PROFILE` is the AWS CLI profile to use, and the `TERRAFORM_ACTION` is the Terraform action to perform, such as `plan` or `apply`.
+
+#### Note: The `deploy.sh` script assumes that you have the AWS CLI and Terraform installed and setup on your machine.
 
 ## Route Registration
 
@@ -93,16 +114,6 @@ NetGo provides JWT authentication support. You can use the `Authenticate` middle
 api := RestApi()
 api.UseMiddleware(Authenticate)
 ```
-
-## Deployment
-
-To deploy the application, you can use the following command:
-
-```bash
-$ ./deploy.sh
-```
-
-Then you must upload the `deployment.zip` file to AWS Lambda and ensure your lambda function has the needed environment variables and DynamoDB permissions.
 
 ## Local development
 

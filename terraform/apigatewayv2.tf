@@ -35,6 +35,7 @@ resource "aws_apigatewayv2_domain_name" "custom_domain" {
     endpoint_type   = "REGIONAL"
     security_policy = "TLS_1_2"  
   }
+  depends_on = [aws_acm_certificate_validation.cert_validation]
 }
 
 # Base path mapping for the custom domain

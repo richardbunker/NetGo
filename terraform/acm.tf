@@ -6,8 +6,6 @@ resource "aws_acm_certificate_validation" "cert_validation" {
   validation_record_fqdns = [
     for dvo in aws_acm_certificate.api_cert.domain_validation_options : aws_route53_record.validation[dvo.domain_name].fqdn
   ]
-
-  depends_on = [aws_route53_record.custom_domain] 
 }
 
 # Obtain an SSL certificate from AWS ACM
