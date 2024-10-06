@@ -22,6 +22,8 @@ resource "aws_lambda_function" "my_lambda" {
       DDB_TABLE_NAME = var.dynamodb_table_name
       DDB_GSI_NAME= var.dynamodb_global_secondary_index_name
 
+      APP_LOGIN_URL = var.app_login_url
+
       EMAIL_FROM = var.email_from
       EMAIL_PASSWORD = var.email_password
       EMAIL_SMTP_HOST = var.email_smtp_host

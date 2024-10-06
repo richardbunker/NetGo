@@ -6,13 +6,20 @@ import (
 	"os"
 )
 
-func EmailMagicLink(email string, token string) {
-	message := fmt.Sprintf("Please click here to login: https://example.com/login?token=%s", token)
-	SendEmail(email, "Magic Link", []byte(message))
+type EmailSender interface {
+	SendEmail(to string, subject string, message []byte)
+}
+
+type Mailer struct{}
+
+func EmailMagicLink(sender EmailSender, email string, token string) {
+	appLoginURl := os.Getenv("APP_LOGIN_URL")
+	message := fmt.Sprintf("Please click here to login: %s?token=%s", appLoginURl, token)
+	sender.SendEmail(email, "Magic Link", []byte(message))
 }
 
 // Send an email
-func SendEmail(to string, subject string, message []byte) {
+func (m Mailer) SendEmail(to string, subject string, message []byte) {
 	from := os.Getenv("EMAIL_FROM")
 	password := os.Getenv("EMAIL_PASSWORD")
 	smtpHost := os.Getenv("EMAIL_SMTP_HOST")

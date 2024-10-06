@@ -25,7 +25,8 @@ func EmailMagicLink(request RestApiRequest) RestApiResponse {
 	if exists {
 		token, err := auth.GenerateLoginToken(user.Id, 48, 1)
 		if err == nil {
-			notify.EmailMagicLink(userEmail, token)
+			mailer := notify.Mailer{}
+			notify.EmailMagicLink(mailer, userEmail, token)
 		}
 	}
 	return RestApiResponse{

@@ -13,6 +13,11 @@ variable "lambda_function_name" {
   type        = string
 }
 
+variable "app_login_url" {
+  description = "Your webapp's login URL"
+  type        = string
+}
+
 variable "email_from" {
   description = "Email from"
   type        = string

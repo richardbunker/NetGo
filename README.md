@@ -151,14 +151,49 @@ api.Group("/users", []Middleware{Authenticate, RateLimit, Logger}, func() {
 
 ##### Note 💡: The middleware functions are processed in the order they are applied.
 
+## 🖊️ User Registration
+
+NetGo provides user registration with magic login link support. You can use the following endpoint to register a new user:
+
+```bash
+POST /auth/register
+
+{
+    "email": "your@email.com",
+    "name": "Your Name",
+}
+```
+
+Once you successfully register a user, you may send a post request to the following endpoint to receive a magic login link:
+
+```bash
+POST /auth/email-magic-link
+
+{
+    "email": "your@email.com"
+}
+```
+
+A magic login link will be sent to the user's email address. The user can then click the link to log in. The link essentially contains an opaque token that is used to authenticate the user and to generate a JWT token. To obtain the JWT token, you can send a post request to the following endpoint:
+
+```bash
+POST /auth/login
+
+{
+    "token": "pO9EMekMwnwTCXtdZl74Iskm9BHa6YaMInVDSlA4d8duCJW3"
+}
+```
+
 ## 🔐 JWT Authentication
 
-NetGo provides JWT authentication support. You can use the `Authenticate` middleware to protect your routes.
+NetGo provides JWT authentication support out of the box. You can use the `Authenticate` middleware to protect your routes.
 
 ```go
 api := RestApi()
 api.UseMiddleware(Authenticate)
 ```
+
+The `Authenticate` middleware will check the `Authorization` header for a valid JWT token. If the token is valid, the request will be passed to the route's handler function. If the token is invalid, the middleware will return a `401 Unauthorized` response.
 
 ## 💻 Local development
 
