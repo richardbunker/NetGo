@@ -5,7 +5,7 @@ coverage.out
 tasks.md
 bootstrap
 deployment.zip
-.terraform.lock.hcl
+.terraform.*
 .terraform
 terraform.tfstate*
-aws_terraform.tfvars
+vars.tfvars

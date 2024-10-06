@@ -13,11 +13,6 @@ variable "lambda_function_name" {
   type        = string
 }
 
-variable "jwt_secret" {
-  description = "JWT secret"
-  type        = string
-}
-
 variable "email_from" {
   description = "Email from"
   type        = string
@@ -68,7 +63,3 @@ variable "domain_name" {
   type        = string
 }
 
-variable "hosted_zone_id" {
-  description = "Hosted zone ID of the domain"
-  type        = string
-}
