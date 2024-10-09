@@ -4,9 +4,9 @@ import (
 	"time"
 )
 
-// CreateExpiresAtString creates a string representation of the time that is n hours from now.
-func CreateExpiresAtString(expiresInNHours int) string {
-	return time.Now().Add(time.Hour * time.Duration(expiresInNHours)).Format(time.RFC3339)
+// A helper function to convert a time to a RFC3339
+func convertTimeToString(t time.Time) string {
+	return t.Format(time.RFC3339)
 }
 
 func CreateExpiresAtTime(expiresInNHours int) time.Time {
