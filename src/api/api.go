@@ -106,7 +106,7 @@ func (api *Api) RegisterRoute(method Method, pathToMatch string, routeOptions Ro
 }
 
 // Handle a request
-func (api *Api) HandleRequest(request RestApiRequest) RestApiResponse {
+func (api *Api) HandleRequest(request NetGoRequest) NetGoResponse {
 	err := validateMethodHasRoutes(Method(request.Method), api.methods)
 	if err != nil {
 		return NetGoHttp.ApiResponse(405, "Method not allowed")

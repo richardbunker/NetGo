@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func LambdaAPIGatewayHTTPRequestAdaptor(request events.APIGatewayV2HTTPRequest) NetGoTypes.RestApiRequest {
+func LambdaAPIGatewayHTTPRequestAdaptor(request events.APIGatewayV2HTTPRequest) NetGoTypes.NetGoRequest {
 	// Adapt the headers from a map[string]string to a map[string][]string
 	headers := request.Headers
 	adaptedHeaders := make(map[string][]string)
@@ -26,7 +26,7 @@ func LambdaAPIGatewayHTTPRequestAdaptor(request events.APIGatewayV2HTTPRequest) 
 		fmt.Println("Error unmarshalling request body")
 		requestBody = make(map[string]interface{})
 	}
-	adaptedRequest := NetGoTypes.RestApiRequest{
+	adaptedRequest := NetGoTypes.NetGoRequest{
 		Headers: adaptedHeaders,
 		Cookies: request.Cookies,
 		Method:  request.RequestContext.HTTP.Method,

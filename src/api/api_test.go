@@ -8,8 +8,8 @@ import (
 )
 
 // Mock handler for testing
-func ShowPost(request RestApiRequest) RestApiResponse {
-	return RestApiResponse{
+func ShowPost(request NetGoRequest) NetGoResponse {
+	return NetGoResponse{
 		Body: map[string]interface{}{
 			"postId": request.PathParams["postId"],
 		},
@@ -18,8 +18,8 @@ func ShowPost(request RestApiRequest) RestApiResponse {
 }
 
 // Mock handler for testing that returns as 200
-func Return200(request RestApiRequest) RestApiResponse {
-	return RestApiResponse{
+func Return200(request NetGoRequest) NetGoResponse {
+	return NetGoResponse{
 		Body: map[string]interface{}{
 			"message": "ok",
 		},
@@ -38,7 +38,7 @@ func TestApiGetRoute(t *testing.T) {
 	})
 
 	// Test case: Authorized request
-	request := RestApiRequest{
+	request := NetGoRequest{
 		Method: "GET",
 		Path:   "/posts/123",
 	}
@@ -66,7 +66,7 @@ func TestApiPostRoute(t *testing.T) {
 	})
 
 	// Test case: Authorized request
-	request := RestApiRequest{
+	request := NetGoRequest{
 		Method: "POST",
 		Path:   "/posts",
 	}
@@ -90,7 +90,7 @@ func TestApiPutRoute(t *testing.T) {
 	})
 
 	// Test case: Authorized request
-	request := RestApiRequest{
+	request := NetGoRequest{
 		Method: "PUT",
 		Path:   "/posts/123",
 	}
@@ -114,7 +114,7 @@ func TestApiDeleteRoute(t *testing.T) {
 	})
 
 	// Test case: Authorized request
-	request := RestApiRequest{
+	request := NetGoRequest{
 		Method: "DELETE",
 		Path:   "/posts/123",
 	}
@@ -142,21 +142,21 @@ func TestApiGroupRoute(t *testing.T) {
 	})
 
 	// Test case: Group one
-	reqOne := RestApiRequest{
+	reqOne := NetGoRequest{
 		Method: "GET",
 		Path:   "/group/one",
 	}
 	// Test case: Group two
-	reqTwo := RestApiRequest{
+	reqTwo := NetGoRequest{
 		Method: "GET",
 		Path:   "/group/two",
 	}
 	// Test case: Not in group
-	reqThree := RestApiRequest{
+	reqThree := NetGoRequest{
 		Method: "GET",
 		Path:   "/group/three",
 	}
-	reqFour := RestApiRequest{
+	reqFour := NetGoRequest{
 		Method: "GET",
 		Path:   "/not-here",
 	}
@@ -190,11 +190,11 @@ func TestApiHandleRequest(t *testing.T) {
 	})
 
 	// Test Requests
-	reqOne := RestApiRequest{
+	reqOne := NetGoRequest{
 		Method: "GET",
 		Path:   "/test",
 	}
-	reqTwo := RestApiRequest{
+	reqTwo := NetGoRequest{
 		Method: "PUT",
 		Path:   "/test",
 	}
@@ -220,7 +220,7 @@ func TestMethodNotAllowed(t *testing.T) {
 	})
 
 	// Test Requests
-	req := RestApiRequest{
+	req := NetGoRequest{
 		Method: "PUT",
 		Path:   "/test",
 	}
@@ -241,14 +241,14 @@ func TestRouteMiddleware(t *testing.T) {
 	api.Get("/posts/:postId", RouteOptions{
 		Handler: ShowPost,
 		Middleware: []Middleware{
-			func(request RestApiRequest) (error, *MiddlewareReason) {
+			func(request NetGoRequest) (error, *MiddlewareReason) {
 				return nil, nil
 			},
 		},
 	})
 
 	// Test case: Authorized request
-	request := RestApiRequest{
+	request := NetGoRequest{
 		Method: "GET",
 		Path:   "/posts/123",
 	}
@@ -269,7 +269,7 @@ func TestRouteMiddlewareShouldInterceptRequest(t *testing.T) {
 	api.Get("/posts/:postId", RouteOptions{
 		Handler: ShowPost,
 		Middleware: []Middleware{
-			func(request RestApiRequest) (error, *MiddlewareReason) {
+			func(request NetGoRequest) (error, *MiddlewareReason) {
 				return fmt.Errorf("Unauthorized"), &MiddlewareReason{
 					StatusCode: 401,
 					Message:    "Unauthorized",
@@ -279,7 +279,7 @@ func TestRouteMiddlewareShouldInterceptRequest(t *testing.T) {
 	})
 
 	// Test case: Unauthorized request
-	request := RestApiRequest{
+	request := NetGoRequest{
 		Method: "GET",
 		Path:   "/posts/123",
 	}
@@ -302,7 +302,7 @@ func TestHandlesInvalidRouteRegistration(t *testing.T) {
 	})
 
 	// Test case: Unauthorized request
-	request := RestApiRequest{
+	request := NetGoRequest{
 		Method: "GET",
 		Path:   "/posts/123",
 	}
@@ -320,7 +320,7 @@ func TestRegistersMiddleware(t *testing.T) {
 	api := NetGo()
 
 	api.UseMiddleware([]Middleware{
-		func(request RestApiRequest) (error, *MiddlewareReason) {
+		func(request NetGoRequest) (error, *MiddlewareReason) {
 			return nil, nil
 		},
 	})

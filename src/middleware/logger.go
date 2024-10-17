@@ -6,13 +6,13 @@ import (
 	"fmt"
 )
 
-func LogRequests(request RestApiRequest) (error, *MiddlewareReason) {
+func LogRequests(request NetGoRequest) (error, *MiddlewareReason) {
 	logRequest(request)
 	return nil, nil
 }
 
 // Log the incoming request
-func logRequest(request RestApiRequest) {
+func logRequest(request NetGoRequest) {
 	infoLine := ""
 	headersTitle := "🔐 Headers: "
 	headers := []string{}

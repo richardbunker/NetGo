@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func StandardLibraryHTTPRequestAdaptor(r *http.Request) RestApiRequest {
+func StandardLibraryHTTPRequestAdaptor(r *http.Request) NetGoRequest {
 	var cookies []string
 	for _, cookie := range r.Cookies() {
 		cookies = append(cookies, cookie.String())
@@ -16,7 +16,7 @@ func StandardLibraryHTTPRequestAdaptor(r *http.Request) RestApiRequest {
 	bodyToMap := make(map[string]interface{})
 	json.Unmarshal(body, &bodyToMap)
 
-	adaptedRequest := RestApiRequest{
+	adaptedRequest := NetGoRequest{
 		Headers: r.Header,
 		Cookies: cookies,
 		Method:  r.Method,

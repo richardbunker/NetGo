@@ -1,6 +1,6 @@
 package types
 
-type RestApiRequest struct {
+type NetGoRequest struct {
 	Headers    map[string][]string
 	Cookies    []string
 	Method     string
@@ -10,19 +10,19 @@ type RestApiRequest struct {
 	Body       map[string]interface{}
 }
 
-type RestApiResponse struct {
+type NetGoResponse struct {
 	Body       interface{}
 	StatusCode int
 }
 
-type Handler func(request RestApiRequest) RestApiResponse
+type Handler func(request NetGoRequest) NetGoResponse
 
 type MiddlewareReason struct {
 	StatusCode int
 	Message    string
 }
 
-type Middleware func(request RestApiRequest) (error, *MiddlewareReason)
+type Middleware func(request NetGoRequest) (error, *MiddlewareReason)
 
 type RouteOptions struct {
 	Middleware []Middleware

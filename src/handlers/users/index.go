@@ -6,7 +6,7 @@ import (
 )
 
 // Show a user
-func IndexUsers(request RestApiRequest) RestApiResponse {
+func IndexUsers(request NetGoRequest) NetGoResponse {
 	// Get all users
 	items, _ := db.ListUsers()
 
@@ -19,7 +19,7 @@ func IndexUsers(request RestApiRequest) RestApiResponse {
 		})
 	}
 	// Return the user
-	return RestApiResponse{
+	return NetGoResponse{
 		StatusCode: 200,
 		Body:       users,
 	}

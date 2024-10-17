@@ -12,10 +12,10 @@ type EmailMagicLinkMessage struct {
 }
 
 // Email Magic Link
-func EmailMagicLink(request RestApiRequest) RestApiResponse {
+func EmailMagicLink(request NetGoRequest) NetGoResponse {
 	userEmail, ok := request.Body["email"].(string)
 	if !ok {
-		return RestApiResponse{
+		return NetGoResponse{
 			StatusCode: 400,
 			Body:       "Invalid email",
 		}
@@ -29,7 +29,7 @@ func EmailMagicLink(request RestApiRequest) RestApiResponse {
 			notify.EmailMagicLink(mailer, userEmail, token)
 		}
 	}
-	return RestApiResponse{
+	return NetGoResponse{
 		StatusCode: 200,
 		Body:       EmailMagicLinkMessage{Status: "Done"},
 	}

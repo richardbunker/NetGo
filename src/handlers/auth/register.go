@@ -10,11 +10,11 @@ type RegisterResponse struct {
 	Status string `json:"status"`
 }
 
-func Register(request NetGoTypes.RestApiRequest) NetGoTypes.RestApiResponse {
+func Register(request NetGoTypes.NetGoRequest) NetGoTypes.NetGoResponse {
 	userEmail, emailOk := request.Body["email"].(string)
 	name, nameOk := request.Body["name"].(string)
 	if !emailOk || !nameOk {
-		return NetGoTypes.RestApiResponse{
+		return NetGoTypes.NetGoResponse{
 			StatusCode: 400,
 			Body:       "Invalid email or name",
 		}
@@ -24,7 +24,7 @@ func Register(request NetGoTypes.RestApiRequest) NetGoTypes.RestApiResponse {
 	_, exists := db.FindUserByEmail(userEmail)
 	if exists {
 		// Obfuscate this knowledge and return a 200
-		return NetGoTypes.RestApiResponse{
+		return NetGoTypes.NetGoResponse{
 			StatusCode: 200,
 			Body:       RegisterResponse{Status: "Done"},
 		}
@@ -35,7 +35,7 @@ func Register(request NetGoTypes.RestApiRequest) NetGoTypes.RestApiResponse {
 	if err != nil {
 		fmt.Println(err)
 	}
-	return NetGoTypes.RestApiResponse{
+	return NetGoTypes.NetGoResponse{
 		StatusCode: 200,
 		Body:       RegisterResponse{Status: "Done"},
 	}

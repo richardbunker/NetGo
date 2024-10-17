@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func Authenticated(request RestApiRequest) (error, *MiddlewareReason) {
+func Authenticated(request NetGoRequest) (error, *MiddlewareReason) {
 	requestToken := request.Headers["Authorization"]
 	// If no authorization header is present, then return unauthorized
 	if len(requestToken) == 0 {

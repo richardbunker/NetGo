@@ -29,7 +29,7 @@ func TestAuthorizePasses(t *testing.T) {
 		Name:  "Test User",
 	}, []byte(os.Getenv("JWT_SECRET")), 1)
 	authHeaders := []string{validJwt}
-	request := NetGoTypes.RestApiRequest{
+	request := NetGoTypes.NetGoRequest{
 		Headers: map[string][]string{
 			"Authorization": authHeaders,
 		},
@@ -48,7 +48,7 @@ func TestAuthorizeRejectsWithoutAuthHeaderPresent(t *testing.T) {
 	// Mock environment variable
 	setupEnv(t, "JWT_SECRET", "mocked_secret")
 	var authHeaders []string
-	request := NetGoTypes.RestApiRequest{
+	request := NetGoTypes.NetGoRequest{
 		Headers: map[string][]string{
 			"Authorization": authHeaders,
 		},
@@ -74,7 +74,7 @@ func TestAuthorizeRejects(t *testing.T) {
 	// Mock environment variable
 	setupEnv(t, "JWT_SECRET", "mocked_secret")
 	authHeaders := []string{"wrong_token"}
-	request := NetGoTypes.RestApiRequest{
+	request := NetGoTypes.NetGoRequest{
 		Headers: map[string][]string{
 			"Authorization": authHeaders,
 		},

@@ -7,7 +7,7 @@ import (
 )
 
 // Show a user
-func ShowUser(request NetGoTypes.RestApiRequest) NetGoTypes.RestApiResponse {
+func ShowUser(request NetGoTypes.NetGoRequest) NetGoTypes.NetGoResponse {
 	userId := request.PathParams["userId"]
 
 	// Find the user in the database by id
@@ -21,7 +21,7 @@ func ShowUser(request NetGoTypes.RestApiRequest) NetGoTypes.RestApiResponse {
 		Email: item.Email,
 	}
 	// Return the user
-	return NetGoTypes.RestApiResponse{
+	return NetGoTypes.NetGoResponse{
 		StatusCode: 200,
 		Body:       user,
 	}

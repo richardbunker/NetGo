@@ -1,15 +1,19 @@
 ```
-    _   __     __  ______
-   / | / /__  / /_/ ____/___
-  /  |/ / _ \/ __/ / __/ __ \
- / /|  /  __/ /_/ /_/ / /_/ /
-/_/ |_/\___/\__/\____/\____/
-
++=======================================================+
+|                                                       |
+|      _______             __     ________              |
+|      \      \    ____  _/  |_  /  _____/   ____       |
+|      /   |   \ _/ __ \ \   __\/   \  ___  /  _ \      |
+|     /    |    \\  ___/  |  |  \    \_\  \(  <_> )     |
+|     \____|__  / \___  > |__|   \______  / \____/      |
+|             \/      \/                \/              |
+|                                                       |
++=======================================================+
 ```
 
 # NetGo
 
-NetGo is an AWS 'Lambda-first' RESTful API application written in pure Go. It provides a simple way to create RESTful APIs with minimal dependencies. It is designed to be lightweight and easy to use. It is built for the AWS cloud and tightly integrates with AWS services such as DynamoDB, API Gateway, Certificate Manager, and Lambda.
+NetGo is an AWS 'Lambda-first' RESTful API application written in Go. It provides a simple way to create RESTful APIs with minimal dependencies. It is designed to be lightweight and easy to use. It is built for the AWS cloud and tightly integrates with AWS services such as DynamoDB, API Gateway, Certificate Manager, and Lambda.
 
 ## ✨ Features
 
@@ -28,13 +32,13 @@ NetGo is an AWS 'Lambda-first' RESTful API application written in pure Go. It pr
 To get started with NetGo, clone the repository:
 
 ```bash
-$ git clone git@github.com:richardbunker/NetGo.git
+git clone git@github.com:richardbunker/NetGo.git
 ```
 
 Then, `cd` into NetGo and run the following command:
 
 ```bash
-$ go run ./development/app.go
+go run ./development/app.go
 ```
 
 This will start a local server on port 8080. You can then access the server at `http://localhost:8080`.
@@ -44,11 +48,11 @@ This will start a local server on port 8080. You can then access the server at `
 NetGo is designed to be deployed to AWS via Terraform. To deploy the application, you can use the following command:
 
 ```bash
-$ cd ./terraform
-$ terraform init
+cd ./terraform
+terraform init
 
 # ./deploy.sh <AWS_PROFILE> <TERRAFORM_ACTION>
-$ ./deploy.sh my-aws-profile plan
+./deploy.sh my-aws-profile plan
 ```
 
 Running `./deploy.sh` will build the Go application, create a `deployment.zip`, and deploy the application to AWS using Terraform. The `AWS_PROFILE` is the AWS CLI profile to use, and the `TERRAFORM_ACTION` is the Terraform action to perform, such as `plan` or `apply`.
@@ -60,7 +64,7 @@ Running `./deploy.sh` will build the Go application, create a `deployment.zip`, 
 You will need to set the following Terraform variables in a new `vars.tfvars` file:
 
 ```bash
-$ vim vars.tfvars
+vim vars.tfvars
 ```
 
 An example `vars.tfvars.example` file is provided in the `terraform` directory:
@@ -92,7 +96,7 @@ To do this see the following AWS documentation: [Creating a Public Hosted Zone](
 The `./app/bootstrap.go` is where you may register your routes. The `RestApi` function returns a new instance of the `RestApi` struct. After instantiation, you may use the `Get`, `Post`, `Put`, and `Delete` methods to register routes.
 
 ```go
-api := RestApi()
+api := NetGo()
 // Register the routes
 api.Get("/posts/:postId", ShowPost)
 ```
@@ -102,7 +106,7 @@ api.Get("/posts/:postId", ShowPost)
 You can group routes by using the `Group` method. This is useful for applying middleware to a group of routes or for clearer route organisation.
 
 ```go
-api := RestApi()
+api := NetGo()
 // Register the Post CRUD routes
 api.Group("/posts", []Middleware{}, func() {
     api.Get("/", ListPosts)
@@ -115,14 +119,14 @@ api.Group("/posts", []Middleware{}, func() {
 
 ## 🔧 Route Handlers
 
-Route handlers are functions that take a `RestApiRequest` as an argument and return a `RestApiResponse`. The `RestApiRequest` contains the request data, such as the path parameters, query parameters, and request body. The `RestApiResponse` contains the response data, such as the response body and status code.
+Route handlers are functions that take a `NetGoRequest` as an argument and return a `NetGoResponse`. The `NetGoRequest` contains the request data, such as the path parameters, query parameters, and request body. The `NetGoResponse` contains the response data, such as the response body and status code.
 
 ```go
 // A simple handler to show a user
-func ShowUser(request RestApiRequest) RestApiResponse {
+func ShowUser(request NetGoRequest) NetGoResponse {
 	userId := request.PathParams["userId"]
 	user := ... // Fetch the user from the database
-	return RestApiResponse{
+	return NetGoResponse{
 		Body: user,
 		StatusCode: 200,
 	}
@@ -134,14 +138,14 @@ func ShowUser(request RestApiRequest) RestApiResponse {
 NetGo provides middleware support to allow you to proccess the incoming request before it reaches the route's handler function. You can use the `UseMiddleware` method to apply global middleware to you routes.
 
 ```go
-api := RestApi()
+api := NetGo()
 api.UseMiddleware(LoggerMiddleware)
 ```
 
 You can also apply middleware to a group of routes by passing the middleware to the `Group` method.
 
 ```go
-api := RestApi()
+api := NetGo()
 api.Group("/users", []Middleware{Authenticate, RateLimit, Logger}, func() {
 	api.Get("/", ListUsers)
 	api.Get("/:userId", ShowUser)
@@ -197,7 +201,7 @@ Expected response:
 NetGo provides JWT authentication support out of the box. You can use the `Authenticate` middleware to protect your routes.
 
 ```go
-api := RestApi()
+api := NetGo()
 api.UseMiddleware(Authenticate)
 ```
 
@@ -213,7 +217,7 @@ curl -X GET http://localhost:8080/users/1 -H "Authorization eyJhbGciOiJIUzI1NiIs
 To run the application locally, you can use the following command:
 
 ```bash
-$ go run ./development/app.go
+go run ./development/app.go
 ```
 
 ## 🧪 Testing
@@ -221,5 +225,5 @@ $ go run ./development/app.go
 To run the tests, you can use the following command:
 
 ```bash
-$ ./test.sh
+./test.sh
 ```

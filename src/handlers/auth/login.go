@@ -15,11 +15,11 @@ type SuccessfulLoginResponse struct {
 }
 
 // Login a user
-func Login(request NetGoTypes.RestApiRequest) NetGoTypes.RestApiResponse {
+func Login(request NetGoTypes.NetGoRequest) NetGoTypes.NetGoResponse {
 	// Extract the token from the request query
 	token, ok := request.Body["token"].(string)
 	if !ok {
-		return NetGoTypes.RestApiResponse{
+		return NetGoTypes.NetGoResponse{
 			StatusCode: 400,
 			Body:       "Invalid token",
 		}
@@ -28,7 +28,7 @@ func Login(request NetGoTypes.RestApiRequest) NetGoTypes.RestApiResponse {
 	// Find the login token in the database
 	loginToken, err := models.FindLoginToken(token)
 	if err != nil {
-		return NetGoTypes.RestApiResponse{
+		return NetGoTypes.NetGoResponse{
 			StatusCode: 401,
 			Body:       "Invalid token",
 		}
@@ -38,7 +38,7 @@ func Login(request NetGoTypes.RestApiRequest) NetGoTypes.RestApiResponse {
 	if dates.HasExpired(loginToken.ExpiresAt) {
 		// Delete the token from the database
 		models.DeleteLoginToken(loginToken)
-		return NetGoTypes.RestApiResponse{
+		return NetGoTypes.NetGoResponse{
 			StatusCode: 401,
 			Body:       "Token has expired",
 		}
@@ -47,7 +47,7 @@ func Login(request NetGoTypes.RestApiRequest) NetGoTypes.RestApiResponse {
 	// Find the user in the database
 	user, ok := models.FindUserById(loginToken.UserId)
 	if !ok {
-		return NetGoTypes.RestApiResponse{
+		return NetGoTypes.NetGoResponse{
 			StatusCode: 404,
 			Body:       "User not found",
 		}
@@ -58,7 +58,7 @@ func Login(request NetGoTypes.RestApiRequest) NetGoTypes.RestApiResponse {
 	// Delete the token from the database
 	models.DeleteLoginToken(loginToken)
 
-	return NetGoTypes.RestApiResponse{
+	return NetGoTypes.NetGoResponse{
 		StatusCode: 200,
 		Body:       SuccessfulLoginResponse{JWT: jwt},
 	}
