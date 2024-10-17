@@ -93,7 +93,7 @@ To do this see the following AWS documentation: [Creating a Public Hosted Zone](
 
 ## 🛣️ Route Registration
 
-The `./app/bootstrap.go` is where you may register your routes. The `RestApi` function returns a new instance of the `RestApi` struct. After instantiation, you may use the `Get`, `Post`, `Put`, and `Delete` methods to register routes.
+The `./app/bootstrap.go` is where you may register your routes. The `NetGo` function returns a new instance of the `NetGo` struct. After instantiation, you may use the `Get`, `Post`, `Put`, and `Delete` methods to register routes.
 
 ```go
 api := NetGo()
