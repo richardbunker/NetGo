@@ -25,7 +25,7 @@ NetGo is an AWS 'Lambda-first' RESTful API application written in Go. It provide
 -   User registration
 -   Full Terraform deployment support
 -   Local development support
--   Unit tests [WIP]
+-   Unit tests
 
 ## 🚀 Quick Start
 
