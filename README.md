@@ -13,7 +13,7 @@
 
 # NetGo
 
-NetGo is an AWS 'Lambda-first' RESTful API application written in Go. It provides a simple way to create RESTful APIs with minimal dependencies. It is designed to be lightweight and easy to use. It is built for the AWS cloud and tightly integrates with AWS services such as DynamoDB, API Gateway, Certificate Manager, and Lambda.
+NetGo is an AWS 'Lambda-first' RESTful API application written in Go. It provides a simple way to create RESTful APIs with minimal dependencies. It is designed to be lightweight and easy to use. It is built for the AWS cloud and tightly integrates with AWS services such as DynamoDB, API Gateway, Certificate Manager, and Lambda. Deployments are handled via Terraform.
 
 ## ✨ Features
 
